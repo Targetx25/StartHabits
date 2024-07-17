@@ -9,8 +9,7 @@ function Habitsform({habit}) {
 
 
   const dispatch = useDispatch()
-  const userData = useSelector((state) => state.auth.userData)
-  console.log(userData)
+  const userData = useSelector((state) => state.auth.status)
   const {register , handleSubmit} = useForm({
     defaultValues: {
       name : habit?.name || "",
@@ -30,7 +29,7 @@ function Habitsform({habit}) {
       dispatch(updateHabit(data))
 
       try {
-        const res = await configService.updateDocument(data)
+        const res = await configService.updateDocument({...data, goal : parseInt(data.goal) ,hrsday : parseInt(data.hrsday), userid : userData.$id})
       } catch (error) {
         console.log("Appwrite :: UpdateDocument :: Error :: ", error.message)
       }finally{
@@ -42,7 +41,7 @@ function Habitsform({habit}) {
       dispatch(addHabit(data))
 
       try {
-        const res = await configService.createDocument({...data, userid : userData.$id})
+        const res = await configService.createDocument({...data, goal : parseInt(data.goal) ,hrsday : parseInt(data.hrsday), userid : userData.$id})
         console.log("Sucessfully Created")
       } catch (error) {
         console.log("Appwrite :: CreateDocument :: Error :: ", error.message)

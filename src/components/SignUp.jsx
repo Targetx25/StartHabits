@@ -4,9 +4,12 @@ import { useDispatch } from 'react-redux'
 import { Button, Input} from "./index"
 import authService from '../appwrite/auth'
 import { loginSuccess } from '../features/authSlice'
+import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function SignUp() {
-    const dispatch = useDispatch(loginSuccess())
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const {register,handleSubmit} = useForm()
      
     const onSubmit = async (data) => {
@@ -14,11 +17,17 @@ function SignUp() {
       try {
         //Also need to send name to createAcc Maybe idk for later
         const res = await authService.createAccount({...data})
+          if(res){
+            const userData = await authService.getUserInfo()
+              if(userData){
+                dispatch(loginSuccess(userData))
+                navigate("/")
+              }
+          }    
         
-      } catch (error) {
+     } catch (error) {
         console.log("Error While Creating Account4 !")
-      }
-      dispatch(loginSuccess(data))
+     }
     }
     
     const googleLogin =  async () => {
@@ -28,6 +37,15 @@ function SignUp() {
     <div>
       <div>
         <form onSubmit={handleSubmit(onSubmit)}>
+
+          <Input
+          label={"Name"}
+          type = {"text"}
+          placeholder={"Enter Your Name"}
+          className={"text-black hover:shadow-md"}
+          {...register("name", { required: true })}
+          />
+
           <Input
           label={"Email"}
           type = {"email"}

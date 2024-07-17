@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, Input} from "./index"
 import authService from '../appwrite/auth'
 import { loginSuccess } from '../features/authSlice'
+import { Link } from 'react-router-dom'
 
 
 
@@ -11,18 +12,19 @@ function Login() {
   const dispatch = useDispatch()
   const {register,handleSubmit} = useForm()
 
-  useEffect( ()=> {
-    authService.getUserInfo()
-    .then((data) => {
-      console.log(data)
-      if(data){
-        dispatch(loginSuccess(data))
+  //This code was just for testing habit submission Maybe needed in future fo development purposes
+  // useEffect( ()=> {
+  //   authService.getUserInfo()
+  //   .then((data) => {
+  //     console.log(data)
+  //     if(data){
+  //       dispatch(loginSuccess(data))
 
-      }
+  //     }
 
 
-    })
-  }, [])
+  //   })
+  // }, [])
 
   
    
@@ -33,12 +35,11 @@ function Login() {
 
       if(res){
         const userData = await authService.getUserInfo()
-        console.log(userData)
           if(userData){
             dispatch(loginSuccess(userData))
           }
       }else{
-        console.log("Error While userDa")
+        console.log("Error While fetching user data !")
       }
     
     } catch (error) {
@@ -52,6 +53,7 @@ function Login() {
 
   return (
     <div className=''>
+      <Link to="/habit">habit</Link>
       <div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Input
@@ -90,7 +92,7 @@ function Login() {
       icon = ""
       text = "Login with Google"/>
      <div>
-      {/* Not a memeber Sign up now ! */}
+      {/* Not a memeber Sign up now ! Pending to be implemented */}
      </div>
     </div>
     
