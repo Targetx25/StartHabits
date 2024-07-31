@@ -10,6 +10,11 @@ const listSlice = createSlice({
     initialState,
 
     reducers : {
+
+        allhabits : (state, action) => {
+            state.habits = action.payload
+        },
+
         addHabit : (state, action) => {
             state.habits.push(action.payload)
         },
@@ -38,7 +43,7 @@ const listSlice = createSlice({
 })
 
 
-export const { addHabit, completeHabit, updateHabit, deletehabit } = listSlice.actions;
+export const { addHabit, completeHabit, updateHabit, deletehabit, allhabits } = listSlice.actions;
 export default listSlice.reducer;
 
 

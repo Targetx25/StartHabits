@@ -60,16 +60,29 @@ export class appwriteConfig{
 
     async getHabitList(){
         try {
-           return await this.databases.listdocuments(
+           return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
                 conf.habitCollectionId,
-                [Query.select(["name"])]
+                [Query.select(["name", "streak", "complete", "$id"])]
 
             )
 
         } catch (error) {
          console.log("Appwrite :: getHabitList  :: Error :: ", error.message)   
         }
+    }
+
+    async getHabit(id){
+        try {
+            return await this.databases.getDocument(
+                conf.appwriteDatabaseId,
+                conf.habitCollectionId,
+                id,
+            )
+        } catch (error) {
+            console.log("Appwrite :: getHabit :: Error :: ", error.message)
+        }
+
     }
 
     async deleteDocument(id){
@@ -84,8 +97,59 @@ export class appwriteConfig{
         }
     }
 
+    async newStreak(data){
+        try {
+            return await this.databases.createDocument(
+                conf.appwriteDatabaseId,
+                conf.streakCollectionId,
+                ID.unique(),
+                {
+                   ...data
+                }
+            )
+        } catch (error) {
+            console.log("Appwrite :: newStreak :: Error :: ", error.message)
+        }
+    }
 
+    async updateStreak(id, data){
+        try {
+            return await this.databases.updateDocument(
+                conf.appwriteDatabaseId,
+                conf.streakCollectionId,
+                id,
+                {...data}
+            )
+        } catch (error) {
+            console.log("Appwrite :: UpdateStreak :: Error :: ", error.message)
+        }
+    }
+
+    async deleteStreakinfo(id){
+        try{
+            return await this.databases.deleteDocument(
+                conf.appwriteDatabaseId,
+                conf.streakCollectionId,
+                id
+            )
+        }catch(error){
+            console.log("Appwrite :: deleteStreakinfo :: Error :: ", error.message)
+        }
+    }
+
+    async getStreakInfo(id){
+        try {
+            return await this.databases.listDocuments(
+                conf.appwriteDatabaseId,
+                conf.streakCollectionId,
+                [Query.equal("habitid", id)]
+            )
+        } catch (error) {
+            console.log("Appwrite :: getStreakInfo :: Error :: ", error.message)
+        }
+    }
 }
+
 
 const configService = new appwriteConfig();
 export default configService;

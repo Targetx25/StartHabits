@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 
 
 
+
 function Login() {
   const dispatch = useDispatch()
   const {register,handleSubmit} = useForm()
@@ -53,7 +54,6 @@ function Login() {
 
   return (
     <div className=''>
-      <Link to="/habit">habit</Link>
       <div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Input
@@ -93,6 +93,7 @@ function Login() {
       text = "Login with Google"/>
      <div>
       {/* Not a memeber Sign up now ! Pending to be implemented */}
+      <Link to = "/signup">Not a member? Sign up now</Link>
      </div>
     </div>
     

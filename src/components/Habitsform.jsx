@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { addHabit, updateHabit } from '../features/listSlice'
 import configService from '../appwrite/config'
+import { useNavigate } from 'react-router-dom'
 
 
 function Habitsform({habit}) {
 
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const userData = useSelector((state) => state.auth.status)
   const {register , handleSubmit} = useForm({
     defaultValues: {
@@ -22,7 +24,6 @@ function Habitsform({habit}) {
 
   const onSubmit =  async(data) => {
     SetLoading(true)
-    console.log(data)
 
     if(habit){
       //Perform Update
@@ -33,16 +34,22 @@ function Habitsform({habit}) {
       } catch (error) {
         console.log("Appwrite :: UpdateDocument :: Error :: ", error.message)
       }finally{
-  
         SetLoading(false)
+        navigate("/habit/"+habit.$id)
       }
     } else{
 
       dispatch(addHabit(data))
 
       try {
+        SetLoading(true)
         const res = await configService.createDocument({...data, goal : parseInt(data.goal) ,hrsday : parseInt(data.hrsday), userid : userData.$id})
-        console.log("Sucessfully Created")
+        console.log(res)
+        const another = await configService.newStreak({habitid: res.$id, startDate: new Date()})
+        if(res && another){
+          console.log("Successfully Created")
+          navigate("/habit/"+res.$id)
+        }
       } catch (error) {
         console.log("Appwrite :: CreateDocument :: Error :: ", error.message)
       }

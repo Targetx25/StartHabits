@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Habitsdisplay() {
+function Card({children}) {
   return (
     <div>
-      
+      {children}
     </div>
   )
 }
 
-export default Habitsdisplay
+export default Card

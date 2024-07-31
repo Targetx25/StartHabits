@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux'
 import { Button, Input} from "./index"
 import authService from '../appwrite/auth'
 import { loginSuccess } from '../features/authSlice'
-import { Navigate } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
 function SignUp() {
@@ -82,7 +81,7 @@ function SignUp() {
       icon = ""
       text = "SignUp with Google"/>
      <div>
-      {/* Already Member Login Now! */}
+      <Link to = '/login'>Already have an account?</Link>
      </div>
     </div>
   )

@@ -4,10 +4,9 @@ import App from './App.jsx'
 import './index.css'
 import { Provider } from 'react-redux'
 import store from './store/store.js'
-import Habitsform from './components/Habitsform.jsx'
-import SignUp from './components/SignUp.jsx'
-import Login from './components/Login.jsx'
+import {Home, Signup, Login, Habit} from './pages/index.js'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Addhabit from './pages/Addhabit.jsx'
 
 const router  = createBrowserRouter([
   {
@@ -15,16 +14,24 @@ const router  = createBrowserRouter([
     element: <App />,
     children : [
       {
-        path: "/habit",
-        element: <Habitsform />
+        path: "/",
+        element: <Home />
+      },
+      {
+        path: "/add-habit",
+        element: <Addhabit />
       },
       {
         path: "/signup",
-        element: <SignUp />
+        element: <Signup />
       },
       {
         path: "/login",
-        element: <Login />
+        element: <Login/>
+      },
+      {
+        path: "/habit/:habitId", 
+        element: <Habit/>
       }
     ]
   },
