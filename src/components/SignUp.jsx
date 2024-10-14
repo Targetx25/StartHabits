@@ -1,4 +1,4 @@
-import React from 'react'
+import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { Button, Input} from "./index"
@@ -15,9 +15,11 @@ function SignUp() {
       
       try {
         //Also need to send name to createAcc Maybe idk for later
+
         const res = await authService.createAccount({...data})
           if(res){
             const userData = await authService.getUserInfo()
+            console.log(userData)
               if(userData){
                 dispatch(loginSuccess(userData))
                 navigate("/")

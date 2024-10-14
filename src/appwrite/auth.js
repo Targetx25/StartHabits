@@ -14,11 +14,12 @@ export  class appwriteAuth{
     }
 
 
-    async createAccount({email, password}){
+    async createAccount({name, email, password}){
+
         try {
             const res = await this.account.create(ID.unique(), email, password)
             if (res){
-                return this.login(email, password)
+                return this.login({email : email, password : password})
             }
         } catch (error) {
             console.log("Appwrite :: CreateAcc :: Error :: " , error.message)
@@ -28,8 +29,7 @@ export  class appwriteAuth{
 
     async login ({email, password}) {
         try {
-            console.log(email)
-            console.log(password)
+
             const res = await this.account.createEmailPasswordSession(email, password)
             return res;
 
@@ -51,12 +51,13 @@ export  class appwriteAuth{
 
     async oauthLogin(){
         try {
-           return  this.account.createOAuth2Session(
-                OAuthProvider.Google,
-                //Add success URL
-                //Add Failure URL
+            this.account.createOAuth2Session(
+            OAuthProvider.Google,
+            'http://localhost:5173/oauth/callback',
+            'http://localhost:5173/signup',
 
-            )
+        )
+       
         } catch (error) {
             console.log("Appwrite :: OAuth :: Error :: ", error.message)  
         }

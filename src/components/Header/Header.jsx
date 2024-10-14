@@ -1,30 +1,44 @@
-import React, {useId} from 'react'
+import React, {useEffect, useId} from 'react'
+import { useSelector } from 'react-redux'
+
 import {useNavigate } from 'react-router-dom'
 
 function Header() {
 
-  const id = useId()
+ 
+  const status = useSelector(state => state.auth.status)
+  console.log(status)
+
 
   const navigate = useNavigate()
 
   const navItems = [
     {
       name : "Home",
-      link : "/"
+      link : "/",
+      active : status
     },
 
     {
       name: "Login",
-      link : "/login"
+      link : "/login",
+      active : !status
     },
 
     {
       name : "SignUp",
-      link : "/signup"
+      link : "/signup",
+      active : !status,
     },
     {
       name : " Add Habit",
-      link : "/add-habit"
+      link : "/add-habit",
+      active : status,
+    },
+    {
+      name: "Logout",
+      link : "/logout",
+      active : status,
     }
   ]
   return (
@@ -33,11 +47,12 @@ function Header() {
       <nav className=" bg-black text-white ">
         <ul className='flex flex-row justify-evenly list-none'>
           {navItems.map(item => (
-            <li key= {item.name} className='rounded-md bg-black'>
-              <button onClick={()=>(navigate(item.link))}>
-                {item.name}
-              </button>
-            </li>
+          
+           item.active && ( <li key= {item.name} className='rounded-md bg-black'>
+           <button onClick={()=>(navigate(item.link))}>
+             {item.name}
+           </button>
+         </li>)
           ))}
       </ul>
 

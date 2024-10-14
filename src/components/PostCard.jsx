@@ -9,7 +9,7 @@ function PostCard({$id, name, streak, status}) {
             <p className='text-2xl'>{name}</p>
             <div className='flex flex-col gap-2'>
                 <p>Streak : {streak}</p>
-                <p>Status : {status ? "Aced it!" : "In Progress"}</p>  
+                <p>Status : {status ? "Deadline Reached" : "In Progress"}</p>  
             </div>
         </div>
       </div>

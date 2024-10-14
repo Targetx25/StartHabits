@@ -18,6 +18,15 @@ export class appwriteConfig{
      }
 
 
+     async getUser(){
+        try {
+            return await this.account.get()
+        } catch (error) {
+            console.log("Appwrite :: getUser :: Error :: ", error.message)
+            return false 
+        }
+     }
+
     //For Creating the document 
 
     async createDocument(data) {

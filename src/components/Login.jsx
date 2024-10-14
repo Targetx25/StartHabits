@@ -4,14 +4,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, Input} from "./index"
 import authService from '../appwrite/auth'
 import { loginSuccess } from '../features/authSlice'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 
 
 function Login() {
   const dispatch = useDispatch()
-  const {register,handleSubmit} = useForm()
+  const navigate = useNavigate()
+  const {register,handleSubmit, formState: { errors }} = useForm()
 
   //This code was just for testing habit submission Maybe needed in future fo development purposes
   // useEffect( ()=> {
@@ -30,7 +31,7 @@ function Login() {
   
    
   const onSubmit = async (data) => {
-
+    console.log(data)
     try {
       const res = await authService.login({...data})
 
@@ -38,6 +39,7 @@ function Login() {
         const userData = await authService.getUserInfo()
           if(userData){
             dispatch(loginSuccess(userData))
+            navigate("/")
           }
       }else{
         console.log("Error While fetching user data !")
@@ -49,7 +51,12 @@ function Login() {
   }
 
   const googleLogin =  async () => {
-    await authService.oauthLogin()
+   try {
+      await authService.oauthLogin()
+
+    } catch (error) {
+      console.log("Error While LOgging in !")
+    }
   }
 
   return (
@@ -68,17 +75,19 @@ function Login() {
             }
           })}
           />
+          {errors.email && <span>{errors.email.message}</span>}
 
           <Input
            type='text'
-           className={"ext-black hover:shadow-md"}
+           className={"text-black hover:shadow-md"}
            placeholder="Enter Your Password"
            label="Password"
            {...register("password",
-         { required: true }, 
-          {minLength: 6, message: "Password must be at least 6 characters"},
-          {maxLength: 12, message: "Password must be at most 12 characters"},
+         { required: true , 
+          minLength:{ value : 6, message: "Password must be at least 6 characters"},
+          maxLength:{ value: 12, message: "Password can be at most 12 characters"}},
           )} />
+          {errors.password && <span>{errors.password.message}</span>}
 
           <Button
           type="submit"
